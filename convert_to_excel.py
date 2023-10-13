@@ -8,7 +8,7 @@ import pandas as pd, time, pprint
 
 # convert product csv file to excel
 result_csv_df = pd.read_csv('resource/eCommerce_products.csv')
-result_csv_df.to_excel('resource/Fiverr_eCommerce_Upload_Template_22-09-23.xlsx', index=False)
+result_csv_df.to_excel('resource/Fiverr_eCommerce_Upload_Template_10-10-23.xlsx', index=False)
 
 
 # data_retrieved = {

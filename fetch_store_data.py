@@ -3,7 +3,9 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
-categories_available = ['https://coast2coastsupplies.com/product-category/food-service-products/', 'https://coast2coastsupplies.com/product-category/laundry-department-products/', 'https://coast2coastsupplies.com/product-category/maintenance-products/page/3/', 'https://coast2coastsupplies.com/product-category/linen-and-housekeeping-products/page/5/']
+
+
+categories_available = ['https://furnituremaker.com/downloads/', 'https://furnituremaker.com/books/', 'https://furnituremaker.com/templates/']
 # products_presented = []
 # products_filtered = []
 products_with_details = []
@@ -18,7 +20,7 @@ categories = filtered_stores['categories']
 # print(domain)
 
 # pick a store to crawl
-STORE_URL = f'https://{domains[8045]}'
+STORE_URL = f'https://{domains[1174]}' 
 
 # visit each category and gather all products presented
 for category_url in categories_available:
@@ -35,7 +37,7 @@ for category_url in categories_available:
     time.sleep(10)
     # except Exception as e: pass
     
-    products = wait.until(EC.presence_of_all_elements_located(locator=(By.CSS_SELECTOR, 'div .fl-post-grid-title a')))
+    products = wait.until(EC.presence_of_all_elements_located(locator=(By.CSS_SELECTOR, 'li .woocommerce-LoopProduct-link.woocommerce-loop-product__link')))
     for product in products[:20]:
         products_presented.append(product.get_attribute('href'))
     # driver.quit()
@@ -53,21 +55,21 @@ for category_url in categories_available:
         time.sleep(2)
         # driver = uc.Chrome(driver_executable_path='C:/Development/chromedriver.exe', headless=True)
         # driver.get(url=product_url)
-        wait.until(EC.presence_of_element_located(locator=(By.CSS_SELECTOR, f'div:nth-child({x+1}) .fl-post-grid-title a'))).click()
+        wait.until(EC.presence_of_element_located(locator=(By.CSS_SELECTOR, f'li:nth-child({x+1}) .woocommerce-LoopProduct-link.woocommerce-loop-product__link'))).click()
         time.sleep(5)
         # gather details needed
-        title = wait.until(EC.presence_of_element_located(locator=(By.CSS_SELECTOR, '.fl-heading')))
+        title = wait.until(EC.presence_of_element_located(locator=(By.CSS_SELECTOR, '.product_title.entry-title')))
 
-        try: description = wait.until(EC.presence_of_element_located(locator=(By.CSS_SELECTOR, '.woocommerce-product-details__short-description')))
-        except: description = wait.until(EC.presence_of_element_located(locator=(By.CSS_SELECTOR, 'div#tab-description')))
+        try: description = wait.until(EC.presence_of_element_located(locator=(By.CSS_SELECTOR, '#tab-description p')))
+        except: description = wait.until(EC.presence_of_element_located(locator=(By.CSS_SELECTOR, '.woocommerce-product-details__short-description')))
         
         price = wait.until(EC.presence_of_element_located(locator=(By.CSS_SELECTOR, '.woocommerce-Price-amount.amount')))
         # time.sleep(3)
         
-        try: image_url = wait.until(EC.presence_of_element_located(locator=(By.CSS_SELECTOR, '.wp-post-image')))
-        except: image_url = wait.until(EC.presence_of_element_located(locator=(By.CSS_SELECTOR, '.zoomtoo-container img')))
+        try: image_url = wait.until(EC.presence_of_element_located(locator=(By.CSS_SELECTOR, '.woocommerce-product-gallery__wrapper img')))
+        except: image_url = wait.until(EC.presence_of_element_located(locator=(By.CSS_SELECTOR, '.avia_image')))
         
-        products_with_details.append(('Coast 2 Coast Supplies, Inc', title.text, description.text[:150], price.text.strip('$'), product_url, image_url.get_attribute('src'), categories[8045], category_url.split('.')[-1].strip('com'), STORE_URL))
+        products_with_details.append(('DARRELL PEART furnituremaker', title.text, description.text[:150], price.text.split('$')[-1], product_url, image_url.get_attribute('src'), categories[1174], category_url.split('.')[-1].strip('com'), STORE_URL))
         #  'Home / Science & Engineering / Nature /'
         
         with open(file='products_with_details.json', mode='w+') as file:
